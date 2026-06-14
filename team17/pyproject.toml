@@ -1,0 +1,8 @@
+[tool.kedro]
+package_name = "society_to_music"
+project_name = "Society to Music"
+kedro_init_version = "1.0.0"
+source_dir = "src"
+
+[tool.kedro_telemetry]
+project_id = "70098991908c4ceeb00eb1617754c88f"

@@ -1,0 +1,52 @@
+# To enable this custom logging configuration, set KEDRO_LOGGING_CONFIG to the path of this file.
+# More information available at https://docs.kedro.org/en/stable/develop/logging/#how-to-customise-kedro-logging
+version: 1
+
+disable_existing_loggers: false
+
+formatters:
+  simple:
+    format: "%(asctime)s | %(levelname)-8s | %(name)s | %(message)s"
+    datefmt: "%Y-%m-%d %H:%M:%S"
+
+  json:
+    class: pythonjsonlogger.jsonlogger.JsonFormatter
+    format: "%(asctime)s %(levelname)s %(name)s %(message)s %(funcName)s %(lineno)d"
+
+handlers:
+  console:
+    class: logging.StreamHandler
+    level: INFO
+    formatter: simple
+    stream: ext://sys.stdout
+
+  json_console:
+    class: logging.StreamHandler
+    level: INFO
+    formatter: json
+    stream: ext://sys.stdout
+
+root:
+  level: INFO
+  handlers: [console]
+
+loggers:
+  society_to_music:
+    level: INFO
+    handlers: [console]
+    propagate: false
+
+  kedro:
+    level: INFO
+    handlers: [console]
+    propagate: false
+
+  py4j:
+    level: ERROR
+    handlers: [console]
+    propagate: false
+
+  pyspark:
+    level: WARNING
+    handlers: [console]
+    propagate: false

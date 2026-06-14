@@ -1,0 +1,261 @@
+Feature,Rank,Title,Artist,Popularity,Feature_Score
+danceability,1,bad bad bad,Young Thug - Lil Baby,18747.75,0.974
+danceability,2,baby,Quality Control - Lil Baby - DaBaby,30106.14999999999,0.97
+danceability,3,pure cocaine,Lil Baby,16966.200000000015,0.964
+danceability,4,yes indeed,Lil Baby - Drake,68523.75000000004,0.963
+danceability,5,bad liar,Selena Gomez,16801.05,0.953
+danceability,6,money,Cardi B,32293.1,0.95
+danceability,7,get right witcha,Migos,13593.9,0.95
+danceability,8,caroline,Aminé,24863.950000000008,0.945
+danceability,9,splashin,Rich The Kid,14007.55,0.942
+danceability,10,caroline,Aminé,11317.8,0.94
+energy,1,boss bitch,Doja Cat,12441.450000000004,0.955
+energy,2,everybody,Logic,14064.650000000003,0.94
+energy,3,just hold on,Steve Aoki - Louis Tomlinson,10233.9,0.932
+energy,4,good as hell,Lizzo,14813.85,0.919
+energy,5,nice for what,Drake,34945.69999999998,0.913
+energy,6,nice for what,Drake,27828.80000000001,0.909
+energy,7,high hopes,Panic! At The Disco,51281.19999999998,0.904
+energy,8,juice,Lizzo,16629.350000000006,0.889
+energy,9,motivation,Normani,11455.8,0.887
+energy,10,rolex,Ayo & Teo,22582.000000000004,0.8859999999999999
+speechiness,1,shotta flow,NLE Choppa,14696.2,0.588
+speechiness,2,splashin,Rich The Kid,14007.55,0.565
+speechiness,3,21,Polo G,19696.05,0.541
+speechiness,4,yes indeed,Lil Baby - Drake,68523.75000000004,0.53
+speechiness,5,caroline,Aminé,11317.8,0.505
+speechiness,6,caroline,Aminé,24863.950000000008,0.4920000000000001
+speechiness,7,life is good,Future - Drake,23737.15,0.487
+speechiness,8,element.,Kendrick Lamar,20577.149999999983,0.485
+speechiness,9,life is good,Future - Drake,34040.89999999997,0.481
+speechiness,10,river,Eminem - Ed Sheeran,16016.05,0.473
+acoustics,1,when the partys over,Billie Eilish,26340.3,0.979
+acoustics,2,when the partys over,Billie Eilish,57236.95000000001,0.978
+acoustics,3,i love you,Billie Eilish,18010.15,0.952
+acoustics,4,lovely,Billie Eilish - Khalid,79693.90000000005,0.934
+acoustics,5,its beginning to look a lot like christmas,Michael Bublé,13829.100000000004,0.908
+acoustics,6,everything i wanted,Billie Eilish,48156.50000000005,0.902
+acoustics,7,changes,XXXTENTACION,50882.15,0.883
+acoustics,8,july,Noah Cyrus,14518.449999999995,0.868
+acoustics,9,if the world was ending - feat. julia michaels,JP Saxe - Julia Michaels,32621.299999999985,0.866
+acoustics,10,everybody dies in their nightmares,XXXTENTACION,50539.89999999997,0.847
+instrumentalness,1,whoa,XXXTENTACION,14408.8,0.918
+instrumentalness,2,everything i wanted,Billie Eilish,48156.50000000005,0.657
+instrumentalness,3,white christmas,Bing Crosby - Ken Darby Singers - John Scott Trotter & His Orchestra,12351.150000000003,0.353
+instrumentalness,4,better,Khalid,58057.85000000001,0.334
+instrumentalness,5,after party,Don Toliver,31269.8,0.331
+instrumentalness,6,low life,Future - The Weeknd,17813.850000000002,0.283
+instrumentalness,7,you should see me in a crown,Billie Eilish,15124.149999999998,0.219
+instrumentalness,8,thunder,Imagine Dragons,40887.35,0.21
+instrumentalness,9,bury a friend,Billie Eilish,11137.299999999996,0.162
+instrumentalness,10,bury a friend,Billie Eilish,28552.05,0.162
+liveliness,1,earfquake,"Tyler, The Creator",47386.65,0.795
+liveliness,2,the box,Roddy Ricch,106599.15000000013,0.79
+liveliness,3,wish you were gay,Billie Eilish,22689.199999999983,0.752
+liveliness,4,nuketown,Ski Mask The Slump God - Juice WRLD,15346.15,0.7340000000000001
+liveliness,5,camelot,NLE Choppa,29097.450000000004,0.7170000000000001
+liveliness,6,death bed,Powfu - beabadoobee,44041.95000000001,0.696
+liveliness,7,go,The Kid LAROI - Juice WRLD,12796.05,0.612
+liveliness,8,after party,Don Toliver,31269.8,0.603
+liveliness,9,one thing right,Marshmello - Kane Brown,22882.9,0.5820000000000001
+liveliness,10,gods plan,Drake,63002.49999999999,0.5579999999999999
+valence,1,theres nothing holdin me back,Shawn Mendes,30607.75,0.966
+valence,2,make no sense,YoungBoy Never Broke Again,22426.85,0.962
+valence,3,sucker,Jonas Brothers,24715.14999999999,0.952
+valence,4,sucker,Jonas Brothers,24342.1,0.952
+valence,5,last christmas,Wham!,17517.000000000004,0.947
+valence,6,shape of you,Ed Sheeran,96615.85000000006,0.931
+valence,7,sunflower - spider-man: into the spider-verse,Post Malone - Swae Lee,15613.799999999996,0.927
+valence,8,finesse - remix; feat. cardi b,Bruno Mars - Cardi B,25973.69999999997,0.926
+valence,9,sunflower - spider-man: into the spider-verse,Post Malone - Swae Lee,74332.30000000005,0.913
+valence,10,roses - imanbek remix,SAINt JHN - Imanbek,30557.250000000004,0.898
+tempo,1,big bank,YG - 2 Chainz - Big Sean - Nicki Minaj,27213.05,203.911
+tempo,2,pure water,Mustard - Migos,17308.3,202.015
+tempo,3,pure water,Mustard - Migos,27320.4,202.006
+tempo,4,its the most wonderful time of the year,Andy Williams,15575.65,201.629
+tempo,5,let me love you,DJ Snake - Justin Bieber,11524.6,199.864
+tempo,6,startender,A Boogie Wit da Hoodie - Tyga - Offset,17051.15,191.971
+tempo,7,santa tell me,Ariana Grande,13317.6,191.9
+tempo,8,boyfriend,Ariana Grande - Social House,18059.25,190.097
+tempo,9,element.,Kendrick Lamar,20577.149999999983,189.891
+tempo,10,chained to the rhythm,Katy Perry - Skip Marley,10382.4,189.798
+Celebrate,1,breathin,Ariana Grande,24437.35,1.0
+Celebrate,2,i feel it coming,The Weeknd - Daft Punk,30066.55000000001,1.0
+Celebrate,3,white christmas,Bing Crosby - Ken Darby Singers - John Scott Trotter & His Orchestra,12351.150000000003,1.0
+Celebrate,4,taki taki,DJ Snake - Selena Gomez - Ozuna - Cardi B,30358.5,1.0
+Celebrate,5,glorious,Macklemore - Skylar Grey,10770.15,1.0
+Celebrate,6,i,Lil Skies,19666.60000000001,1.0
+Celebrate,7,solo dance,Martin Jensen,10770.249999999996,1.0
+Celebrate,8,supalonely,BENEE - Gus Dapperton,25425.45,1.0
+Celebrate,9,something just like this,The Chainsmokers - Coldplay,39803.650000000016,1.0
+Celebrate,10,arms around you,XXXTENTACION - Lil Pump - Swae Lee - Maluma,19187.700000000004,1.0
+Desire,1,stuck with u,Ariana Grande - Justin Bieber,20727.45,1.0
+Desire,2,mia,Bad Bunny - Drake,35113.75,1.0
+Desire,3,bad at love,Halsey,28909.95,1.0
+Desire,4,bodak yellow,Cardi B,11807.049999999996,1.0
+Desire,5,love galore,SZA - Travis Scott,37614.5,1.0
+Desire,6,im the one,DJ Khaled - Justin Bieber - Quavo - Chance the Rapper - Lil Wayne,12512.299999999996,1.0
+Desire,7,whoa,XXXTENTACION,14408.8,1.0
+Desire,8,bodak yellow,Cardi B,48382.59999999997,1.0
+Desire,9,no limit,G-Eazy - A$AP Rocky - Cardi B,16584.800000000007,1.0
+Desire,10,you should see me in a crown,Billie Eilish,15124.149999999998,1.0
+Explore,1,righteous,Juice WRLD,11383.750000000002,1.0
+Explore,2,high hopes,Panic! At The Disco,51281.19999999998,1.0
+Explore,3,believer,Imagine Dragons,49956.70000000001,1.0
+Explore,4,in your eyes,The Weeknd,17526.09999999999,1.0
+Explore,5,natural,Imagine Dragons,14242.6,1.0
+Explore,6,beautiful people,Ed Sheeran - Khalid,33409.849999999984,1.0
+Explore,7,lovely,Billie Eilish - Khalid,79693.90000000005,1.0
+Explore,8,heaven,Kane Brown,19482.550000000017,1.0
+Explore,9,malibu,Miley Cyrus,14440.05,1.0
+Explore,10,castle on the hill,Ed Sheeran,24202.25,1.0
+Fun,1,party girl,StaySolidRocky,14481.15,1.0
+Fun,2,paris,The Chainsmokers,30937.74999999997,1.0
+Fun,3,roxanne,Arizona Zervas,72755.85000000005,1.0
+Fun,4,flex,Polo G - Juice WRLD,20807.25,1.0
+Fun,5,sky walker,Miguel - Travis Scott,25033.55,1.0
+Fun,6,the git up,Blanco Brown,12150.749999999998,1.0
+Fun,7,moves,Big Sean,23319.45,1.0
+Fun,8,7 rings,Ariana Grande,64561.4,1.0
+Fun,9,controlla,Drake,10532.65,1.0
+Fun,10,greece,DJ Khaled - Drake,15784.5,1.0
+Hope,1,psycho,Post Malone - Ty Dolla $ign,64523.95,1.0
+Hope,2,never recover,Lil Baby - Gunna - Drake,21258.399999999987,1.0
+Hope,3,hope,XXXTENTACION,22353.50000000001,1.0
+Hope,4,delicate,Taylor Swift,12132.5,1.0
+Hope,5,nice for what,Drake,27828.80000000001,1.0
+Hope,6,mine,Bazzi,19368.80000000001,1.0
+Hope,7,wasted,Juice WRLD - Lil Uzi Vert,20196.85,1.0
+Hope,8,everybody dies in their nightmares,XXXTENTACION,50539.89999999997,1.0
+Hope,9,you was right,Lil Uzi Vert,22712.700000000004,1.0
+Hope,10,its you,Ali Gatie,20688.0,1.0
+Love,1,nowadays,Lil Skies - Landon Cube,34641.65,1.0
+Love,2,paradise,Bazzi,17500.3,1.0
+Love,3,drowning,A Boogie Wit da Hoodie - Kodak Black,23549.05,1.0
+Love,4,santa tell me,Ariana Grande,13317.6,1.0
+Love,5,cardigan,Taylor Swift,14408.6,1.0
+Love,6,let me love you,DJ Snake - Justin Bieber,11524.6,1.0
+Love,7,mona lisa,Lil Wayne - Kendrick Lamar,12823.95,1.0
+Love,8,suicidal,YNW Melly,28051.85000000001,1.0
+Love,9,stargazing,Travis Scott,26353.74999999998,1.0
+Love,10,perfect,Ed Sheeran,43670.650000000016,1.0
+Nostalgia,1,its beginning to look a lot like christmas,Michael Bublé,13829.100000000004,1.0
+Nostalgia,2,neighbors,J. Cole,15646.94999999999,1.0
+Nostalgia,3,young dumb & broke,Khalid,87198.39999999994,1.0
+Nostalgia,4,feel it still,Portugal. The Man,36342.900000000016,1.0
+Nostalgia,5,money,Cardi B,32293.1,1.0
+Nostalgia,6,its the most wonderful time of the year,Andy Williams,15575.65,1.0
+Nostalgia,7,no tears left to cry,Ariana Grande,20338.65,1.0
+Nostalgia,8,you need to calm down,Taylor Swift,14464.199999999995,1.0
+Nostalgia,9,yellow hearts,Ant Saunders,10590.199999999995,1.0
+Nostalgia,10,congratulations,Post Malone - Quavo,130719.14999999994,1.0
+Thug,1,betrayed,Lil Xan,10629.949999999995,1.0
+Thug,2,ball for me,Post Malone - Nicki Minaj,25052.1,1.0
+Thug,3,walk em down,NLE Choppa - Roddy Ricch,23903.3,1.0
+Thug,4,baguettes in the face,Mustard - NAV - Playboi Carti - A Boogie Wit da Hoodie,18941.60000000001,1.0
+Thug,5,esskeetit,Lil Pump,10643.25,1.0
+Thug,6,savage remix,Megan Thee Stallion - Beyoncé,26495.749999999985,1.0
+Thug,7,sanguine paradise,Lil Uzi Vert,40324.900000000016,1.0
+Thug,8,223s,YNW Melly - 9lokknine,18038.2,1.0
+Thug,9,startender,A Boogie Wit da Hoodie - Tyga - Offset,17051.15,1.0
+Thug,10,bad bad bad,Young Thug - Lil Baby,18747.75,1.0
+anger_norm,1,graveyard,Halsey,15385.2,0.0365853658536585
+anger_norm,2,gummo,6ix9ine,10913.099999999997,0.0363128491620112
+anger_norm,3,paranoid,Post Malone,17141.1,0.0338983050847458
+anger_norm,4,all girls are the same,Juice WRLD,65162.04999999999,0.0311284046692607
+anger_norm,5,whats poppin,Jack Harlow,40802.099999999984,0.0289156626506024
+anger_norm,6,robbery,Juice WRLD,84626.9,0.0285714285714286
+anger_norm,7,shotta flow,NLE Choppa - Blueface,18702.75,0.0277777777777778
+anger_norm,8,shotta flow,NLE Choppa,14696.2,0.0277777777777778
+anger_norm,9,hot shower,Chance the Rapper - MadeinTYO - DaBaby,19677.150000000005,0.027072758037225
+anger_norm,10,idontwannabeyouanymore,Billie Eilish,20154.099999999988,0.0266666666666667
+anticipation_norm,1,its the most wonderful time of the year,Andy Williams,15575.65,0.0416666666666667
+anticipation_norm,2,money,Cardi B,32293.1,0.0394088669950739
+anticipation_norm,3,city of angels,24kGoldn,11643.0,0.0314465408805031
+anticipation_norm,4,nowadays,Lil Skies - Landon Cube,34641.65,0.0307692307692308
+anticipation_norm,5,the less i know the better,Tame Impala,15681.60000000001,0.0298507462686567
+anticipation_norm,6,perfect,Ed Sheeran,43670.650000000016,0.0284552845528455
+anticipation_norm,7,praying,Kesha,15926.800000000005,0.0268456375838926
+anticipation_norm,8,whats poppin,Jack Harlow,40802.099999999984,0.0265060240963855
+anticipation_norm,9,lovely,Billie Eilish - Khalid,79693.90000000005,0.025974025974026
+anticipation_norm,10,all time low,Jon Bellion,15182.749999999998,0.0257352941176471
+disgust_norm,1,all girls are the same,Juice WRLD,65162.04999999999,0.0311284046692607
+disgust_norm,2,robbery,Juice WRLD,84626.9,0.0285714285714286
+disgust_norm,3,graveyard,Halsey,15385.2,0.024390243902439
+disgust_norm,4,betrayed,Lil Xan,10629.949999999995,0.023121387283237
+disgust_norm,5,betrayed,Lil Xan,25660.099999999995,0.023121387283237
+disgust_norm,6,gummo,6ix9ine,10913.099999999997,0.0223463687150838
+disgust_norm,7,supalonely,BENEE - Gus Dapperton,25425.45,0.0203389830508475
+disgust_norm,8,idontwannabeyouanymore,Billie Eilish,20154.099999999988,0.02
+disgust_norm,9,the bones,Maren Morris,10453.75,0.02
+disgust_norm,10,whats poppin,Jack Harlow,40802.099999999984,0.0192771084337349
+fear_norm,1,robbery,Juice WRLD,84626.9,0.053968253968254
+fear_norm,2,hope,XXXTENTACION,22353.50000000001,0.0392156862745098
+fear_norm,3,graveyard,Halsey,15385.2,0.0365853658536585
+fear_norm,4,pray for me,The Weeknd - Kendrick Lamar,19935.5,0.0353982300884956
+fear_norm,5,hurricane,Luke Combs,13915.850000000011,0.0336700336700337
+fear_norm,6,mona lisa,Lil Wayne - Kendrick Lamar,12823.95,0.0317460317460317
+fear_norm,7,all girls are the same,Juice WRLD,65162.04999999999,0.0311284046692607
+fear_norm,8,taking a walk,Trippie Redd,13441.9,0.0292397660818713
+fear_norm,9,bad liar,Selena Gomez,16801.05,0.0286885245901639
+fear_norm,10,righteous,Juice WRLD,11383.750000000002,0.0285714285714286
+joy_norm,1,perfect,Ed Sheeran,43670.650000000016,0.0447154471544715
+joy_norm,2,the less i know the better,Tame Impala,15681.60000000001,0.0398009950248756
+joy_norm,3,money,Cardi B,32293.1,0.0394088669950739
+joy_norm,4,taste,Tyga - Offset,60454.20000000001,0.0384615384615385
+joy_norm,5,paranoid,Post Malone,17141.1,0.0338983050847458
+joy_norm,6,mona lisa,Lil Wayne - Kendrick Lamar,12823.95,0.0317460317460317
+joy_norm,7,nowadays,Lil Skies - Landon Cube,34641.65,0.0307692307692308
+joy_norm,8,its the most wonderful time of the year,Andy Williams,15575.65,0.0297619047619048
+joy_norm,9,midnight sky,Miley Cyrus,12720.1,0.0287769784172662
+joy_norm,10,unforgettable,French Montana - Swae Lee,63920.34999999997,0.0285714285714286
+sadness_norm,1,mona lisa,Lil Wayne - Kendrick Lamar,12823.95,0.0476190476190476
+sadness_norm,2,graveyard,Halsey,15385.2,0.0365853658536585
+sadness_norm,3,all girls are the same,Juice WRLD,65162.04999999999,0.0350194552529183
+sadness_norm,4,bad guy,Billie Eilish,98959.35000000024,0.0337078651685393
+sadness_norm,5,idontwannabeyouanymore,Billie Eilish,20154.099999999988,0.0333333333333333
+sadness_norm,6,heart on ice,Rod Wave,11939.600000000008,0.0323886639676113
+sadness_norm,7,the bones,Maren Morris,10453.75,0.03
+sadness_norm,8,hope,XXXTENTACION,22353.50000000001,0.0294117647058824
+sadness_norm,9,robbery,Juice WRLD,84626.9,0.0285714285714286
+sadness_norm,10,paranoid,Post Malone,17141.1,0.0254237288135593
+surprise_norm,1,mona lisa,Lil Wayne - Kendrick Lamar,12823.95,0.0317460317460317
+surprise_norm,2,its the most wonderful time of the year,Andy Williams,15575.65,0.0238095238095238
+surprise_norm,3,nowadays,Lil Skies - Landon Cube,34641.65,0.0230769230769231
+surprise_norm,4,the less i know the better,Tame Impala,15681.60000000001,0.0199004975124378
+surprise_norm,5,lovely,Billie Eilish - Khalid,79693.90000000005,0.0194805194805195
+surprise_norm,6,drowning,A Boogie Wit da Hoodie - Kodak Black,23549.05,0.0192307692307692
+surprise_norm,7,drowning,A Boogie Wit da Hoodie - Kodak Black,26589.7,0.0192307692307692
+surprise_norm,8,highest in the room,Travis Scott,70821.00000000001,0.0185185185185185
+surprise_norm,9,mine,Bazzi,19368.80000000001,0.018348623853211
+surprise_norm,10,mine,Bazzi,31889.799999999985,0.018348623853211
+trust_norm,1,eastside,benny blanco - Halsey - Khalid,26870.89999999999,0.0402930402930403
+trust_norm,2,eastside,benny blanco - Halsey - Khalid,50685.60000000001,0.0402930402930403
+trust_norm,3,money,Cardi B,32293.1,0.0394088669950739
+trust_norm,4,the less i know the better,Tame Impala,15681.60000000001,0.0348258706467662
+trust_norm,5,holy,Justin Bieber - Chance the Rapper,12271.100000000002,0.0337078651685393
+trust_norm,6,perfect,Ed Sheeran,43670.650000000016,0.032520325203252
+trust_norm,7,mona lisa,Lil Wayne - Kendrick Lamar,12823.95,0.0317460317460317
+trust_norm,8,taking a walk,Trippie Redd,13441.9,0.0292397660818713
+trust_norm,9,its beginning to look a lot like christmas,Michael Bublé,13829.100000000004,0.0284090909090909
+trust_norm,10,taste,Tyga - Offset,60454.20000000001,0.0274725274725275
+negative_norm,1,robbery,Juice WRLD,84626.9,0.0666666666666667
+negative_norm,2,paranoid,Post Malone,17141.1,0.0593220338983051
+negative_norm,3,all girls are the same,Juice WRLD,65162.04999999999,0.0544747081712062
+negative_norm,4,gummo,6ix9ine,10913.099999999997,0.0446927374301676
+negative_norm,5,woah,Lil Baby,19101.45,0.0439189189189189
+negative_norm,6,woah,Lil Baby,14528.700000000004,0.0439189189189189
+negative_norm,7,humble.,Kendrick Lamar,131271.90000000008,0.0428954423592493
+negative_norm,8,chill bill,Rob $tone - J. Davi$ - Spooks,17889.700000000004,0.0411931818181818
+negative_norm,9,beautiful crazy,Luke Combs,51049.599999999984,0.0411764705882353
+negative_norm,10,taking a walk,Trippie Redd,13441.9,0.0409356725146199
+positive_norm,1,money,Cardi B,32293.1,0.0591133004926108
+positive_norm,2,the less i know the better,Tame Impala,15681.60000000001,0.054726368159204
+positive_norm,3,perfect,Ed Sheeran,43670.650000000016,0.0528455284552846
+positive_norm,4,eastside,benny blanco - Halsey - Khalid,26870.89999999999,0.0512820512820513
+positive_norm,5,eastside,benny blanco - Halsey - Khalid,50685.60000000001,0.0512820512820513
+positive_norm,6,holy,Justin Bieber - Chance the Rapper,12271.100000000002,0.050561797752809
+positive_norm,7,taste,Tyga - Offset,60454.20000000001,0.0494505494505494
+positive_norm,8,paranoid,Post Malone,17141.1,0.0423728813559322
+positive_norm,9,chill bill,Rob $tone - J. Davi$ - Spooks,17889.700000000004,0.0411931818181818
+positive_norm,10,say you wont let go,James Arthur,56811.05000000006,0.040133779264214

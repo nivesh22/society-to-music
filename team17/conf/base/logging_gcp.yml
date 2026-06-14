@@ -1,0 +1,40 @@
+version: 1
+
+disable_existing_loggers: false
+
+formatters:
+  json:
+    class: pythonjsonlogger.jsonlogger.JsonFormatter
+    format: "%(asctime)s %(levelname)s %(name)s %(message)s %(funcName)s %(lineno)d %(pipeline)s"
+
+handlers:
+  json_console:
+    class: logging.StreamHandler
+    level: INFO
+    formatter: json
+    stream: ext://sys.stdout
+
+root:
+  level: INFO
+  handlers: [json_console]
+
+loggers:
+  society_to_music:
+    level: INFO
+    handlers: [json_console]
+    propagate: false
+
+  kedro:
+    level: INFO
+    handlers: [json_console]
+    propagate: false
+
+  py4j:
+    level: ERROR
+    handlers: [json_console]
+    propagate: false
+
+  pyspark:
+    level: WARNING
+    handlers: [json_console]
+    propagate: false

@@ -1,0 +1,150 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main, dev]
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "Branch image to deploy (main uses :latest, dev uses :dev-latest)"
+        required: false
+        default: "main"
+
+env:
+  REGISTRY: us-central1-docker.pkg.dev
+  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  REPOSITORY: society-to-music
+  IMAGE: pipeline
+  REGION: us-central1
+  WORKFLOW_NAME: run-pipeline
+
+jobs:
+  build-and-deploy:
+    name: Build, Push & Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Configure Docker for Artifact Registry
+        run: gcloud auth configure-docker ${{ env.REGISTRY }} --quiet
+
+      # ── Resolve branch + image tags ──────────────────────────────────────────
+      - name: Set image metadata
+        id: meta
+        run: |
+          FULL_IMAGE="${{ env.REGISTRY }}/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE }}"
+
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            BRANCH="${{ inputs.branch }}"
+          else
+            BRANCH="${GITHUB_REF#refs/heads/}"
+          fi
+
+          if [[ "${BRANCH}" == "main" ]]; then
+            IMAGE_TAG="${{ github.sha }}"
+            EXTRA_TAG="latest"
+          else
+            IMAGE_TAG="dev-${{ github.sha }}"
+            EXTRA_TAG="dev-latest"
+          fi
+
+          echo "image=${FULL_IMAGE}"    >> $GITHUB_OUTPUT
+          echo "sha_tag=${IMAGE_TAG}"   >> $GITHUB_OUTPUT
+          echo "extra_tag=${EXTRA_TAG}" >> $GITHUB_OUTPUT
+          echo "branch=${BRANCH}"       >> $GITHUB_OUTPUT
+
+      # ── PR: validate Dockerfile only ─────────────────────────────────────────
+      - name: Build dev image (PR validation only)
+        if: github.event_name == 'pull_request'
+        run: |
+          docker build \
+            --target dev \
+            --tag ${{ steps.meta.outputs.image }}:dev-build \
+            --cache-from type=registry,ref=${{ steps.meta.outputs.image }}:dev-latest,ignore-error=true \
+            .
+          echo "✓ Dev image built successfully — Dockerfile is valid"
+
+      # ── Push: build and push production image ────────────────────────────────
+      - name: Build production image
+        if: github.event_name != 'pull_request'
+        run: |
+          docker build \
+            --target main \
+            --tag ${{ steps.meta.outputs.image }}:${{ steps.meta.outputs.sha_tag }} \
+            --tag ${{ steps.meta.outputs.image }}:${{ steps.meta.outputs.extra_tag }} \
+            --cache-from type=registry,ref=${{ steps.meta.outputs.image }}:${{ steps.meta.outputs.extra_tag }},ignore-error=true \
+            --cache-from type=registry,ref=${{ steps.meta.outputs.image }}:latest,ignore-error=true \
+            .
+
+      - name: Push image to Artifact Registry
+        if: github.event_name != 'pull_request'
+        run: |
+          docker push ${{ steps.meta.outputs.image }}:${{ steps.meta.outputs.sha_tag }}
+          docker push ${{ steps.meta.outputs.image }}:${{ steps.meta.outputs.extra_tag }}
+          echo "✓ Pushed: ${{ steps.meta.outputs.image }}:${{ steps.meta.outputs.sha_tag }}"
+          echo "✓ Pushed: ${{ steps.meta.outputs.image }}:${{ steps.meta.outputs.extra_tag }}"
+
+      # ── Upload pipeline artifacts to GCS ─────────────────────────────────────
+      - name: Upload scripts and source to GCS
+        if: github.event_name != 'pull_request'
+        run: |
+          BUCKET="gs://${{ secrets.GCS_BUCKET }}"
+          gsutil cp scripts/dataproc_init.sh  ${BUCKET}/scripts/dataproc_init.sh
+          gsutil cp scripts/dataproc_run.py   ${BUCKET}/scripts/dataproc_run.py
+          gsutil cp requirements.txt          ${BUCKET}/project/requirements.txt
+          gsutil cp pyproject.toml            ${BUCKET}/project/pyproject.toml
+          gsutil -m rsync -r -d src/          ${BUCKET}/project/src/
+          gsutil -m rsync -r -d conf/         ${BUCKET}/project/conf/
+          echo "✓ Uploaded artifacts to ${BUCKET}"
+
+      # ── Deploy updated workflow definition to GCP ────────────────────────────
+      - name: Deploy Cloud Workflow
+        if: github.event_name != 'pull_request'
+        run: |
+          gcloud workflows deploy ${{ env.WORKFLOW_NAME }} \
+            --location=${{ env.REGION }} \
+            --source=infra/pipeline_workflow.yaml \
+            --service-account=kedro-pipeline@${{ env.PROJECT_ID }}.iam.gserviceaccount.com \
+            --quiet
+          echo "✓ Workflow deployed"
+
+      # ── Trigger Cloud Workflow (create cluster → run → delete) ───────────────
+      # Use the REST API directly — avoids gcloud flag compatibility issues
+      # (--async / --no-wait differ across gcloud versions).
+      - name: Trigger pipeline workflow
+        if: github.event_name != 'pull_request'
+        id: trigger
+        run: |
+          TOKEN=$(gcloud auth print-access-token)
+          RESPONSE=$(curl -sf -X POST \
+            -H "Authorization: Bearer ${TOKEN}" \
+            -H "Content-Type: application/json" \
+            -d "{\"argument\":\"{\\\"image_tag\\\":\\\"${{ steps.meta.outputs.sha_tag }}\\\",\\\"branch\\\":\\\"${{ steps.meta.outputs.branch }}\\\"}\"}" \
+            "https://workflowexecutions.googleapis.com/v1/projects/${{ env.PROJECT_ID }}/locations/${{ env.REGION }}/workflows/${{ env.WORKFLOW_NAME }}/executions")
+          EXECUTION=$(echo "${RESPONSE}" | python3 -c "import sys,json; print(json.load(sys.stdin)['name'])")
+          echo "execution=${EXECUTION}" >> $GITHUB_OUTPUT
+          echo "✓ Triggered: ${EXECUTION}"
+
+      - name: Job summary
+        if: github.event_name != 'pull_request'
+        run: |
+          echo "### Pipeline Triggered 🚀" >> $GITHUB_STEP_SUMMARY
+          echo "| | |" >> $GITHUB_STEP_SUMMARY
+          echo "|---|---|" >> $GITHUB_STEP_SUMMARY
+          echo "| **Branch** | ${{ steps.meta.outputs.branch }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Image** | \`${{ steps.meta.outputs.image }}:${{ steps.meta.outputs.sha_tag }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Workflow execution** | \`${{ steps.trigger.outputs.execution }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Monitor:** https://console.cloud.google.com/workflows/workflow/${{ env.REGION }}/${{ env.WORKFLOW_NAME }}/executions" >> $GITHUB_STEP_SUMMARY

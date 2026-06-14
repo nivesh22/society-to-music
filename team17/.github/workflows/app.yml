@@ -1,0 +1,121 @@
+name: App CI/CD
+
+on:
+  push:
+    branches: [main, dev]
+    paths:
+      - "app/**"
+      - ".github/workflows/app.yml"
+  pull_request:
+    branches: [main, dev]
+    paths:
+      - "app/**"
+      - ".github/workflows/app.yml"
+  workflow_dispatch:
+
+env:
+  REGISTRY: us-central1-docker.pkg.dev
+  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  REPOSITORY: society-to-music
+  IMAGE: app
+  REGION: us-central1
+  SERVICE: society-to-music-app
+
+jobs:
+  build-and-deploy:
+    name: Build, Push & Deploy App
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Configure Docker for Artifact Registry
+        run: gcloud auth configure-docker ${{ env.REGISTRY }} --quiet
+
+      - name: Set image metadata
+        id: meta
+        run: |
+          FULL_IMAGE="${{ env.REGISTRY }}/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE }}"
+          BRANCH="${GITHUB_REF#refs/heads/}"
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            BRANCH="${{ github.head_ref }}"
+          fi
+
+          if [[ "${BRANCH}" == "main" ]]; then
+            SHA_TAG="${{ github.sha }}"
+            FLOAT_TAG="latest"
+          else
+            SHA_TAG="dev-${{ github.sha }}"
+            FLOAT_TAG="dev-latest"
+          fi
+
+          echo "image=${FULL_IMAGE}"      >> $GITHUB_OUTPUT
+          echo "sha_tag=${SHA_TAG}"       >> $GITHUB_OUTPUT
+          echo "float_tag=${FLOAT_TAG}"   >> $GITHUB_OUTPUT
+
+      # ── PR: validate Dockerfile only ────────────────────────────────────────
+      - name: Build image (PR validation only)
+        if: github.event_name == 'pull_request'
+        run: |
+          docker build \
+            --file app/Dockerfile \
+            --tag ${{ steps.meta.outputs.image }}:pr-build \
+            --cache-from type=registry,ref=${{ steps.meta.outputs.image }}:dev-latest,ignore-error=true \
+            app/
+          echo "✓ App image built successfully"
+
+      # ── Push: build, push, deploy ────────────────────────────────────────────
+      - name: Build production image
+        if: github.event_name != 'pull_request'
+        run: |
+          docker build \
+            --file app/Dockerfile \
+            --tag ${{ steps.meta.outputs.image }}:${{ steps.meta.outputs.sha_tag }} \
+            --tag ${{ steps.meta.outputs.image }}:${{ steps.meta.outputs.float_tag }} \
+            --cache-from type=registry,ref=${{ steps.meta.outputs.image }}:${{ steps.meta.outputs.float_tag }},ignore-error=true \
+            app/
+
+      - name: Push image to Artifact Registry
+        if: github.event_name != 'pull_request'
+        run: |
+          docker push ${{ steps.meta.outputs.image }}:${{ steps.meta.outputs.sha_tag }}
+          docker push ${{ steps.meta.outputs.image }}:${{ steps.meta.outputs.float_tag }}
+          echo "✓ Pushed: ${{ steps.meta.outputs.image }}:${{ steps.meta.outputs.sha_tag }}"
+
+      - name: Deploy to Cloud Run
+        if: github.event_name != 'pull_request'
+        run: |
+          gcloud run deploy ${{ env.SERVICE }} \
+            --image ${{ steps.meta.outputs.image }}:${{ steps.meta.outputs.sha_tag }} \
+            --region ${{ env.REGION }} \
+            --platform managed \
+            --allow-unauthenticated \
+            --service-account kedro-pipeline@${{ env.PROJECT_ID }}.iam.gserviceaccount.com \
+            --set-env-vars USE_SECRET_MANAGER=true,GCP_PROJECT_ID=${{ env.PROJECT_ID }} \
+            --memory 1Gi \
+            --cpu 1 \
+            --min-instances 0 \
+            --max-instances 3 \
+            --port 8080 \
+            --quiet
+          echo "✓ Deployed to Cloud Run"
+
+      - name: Job summary
+        if: github.event_name != 'pull_request'
+        run: |
+          URL=$(gcloud run services describe ${{ env.SERVICE }} \
+            --region ${{ env.REGION }} --format='value(status.url)')
+          echo "### App Deployed 🚀" >> $GITHUB_STEP_SUMMARY
+          echo "| | |" >> $GITHUB_STEP_SUMMARY
+          echo "|---|---|" >> $GITHUB_STEP_SUMMARY
+          echo "| **Image** | \`${{ steps.meta.outputs.image }}:${{ steps.meta.outputs.sha_tag }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| **URL** | ${URL} |" >> $GITHUB_STEP_SUMMARY

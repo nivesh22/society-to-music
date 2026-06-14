@@ -1,0 +1,21 @@
+Date,Country,Event,Event Type,Happy,Avg Tone,Tone,Emotion,Top 5
+2017-08-25,USA,Hurricane Harvey landfall in Texas,Natural Disaster – Hurricane,No,-1.476,1.3722,0.5357,No
+2018-02-14,USA,Stoneman Douglas High School shooting (Parkland),Mass Shooting / Gun Violence,No,-0.5976,0.5229,0.0883,No
+2020-01-26,USA,Death of Kobe Bryant helicopter crash,Aviation Accident / Celebrity Death,No,-1.2265,1.3546,1.4468,Yes
+2017-01-20,Australia,Melbourne Bourke Street car attack,Vehicle Attack / Mass Casualty Event,No,-0.5351,0.9457,1.153,No
+2017-01-29,Canada,Quebec City mosque shooting,Terror Attack / Mass Shooting,No,-0.8031,1.4643,3.1389,Yes
+2017-10-16,Ireland,Storm Ophelia hits Ireland,Natural Disaster – Severe Storm,No,-3.3128,3.2115,2.2169,Yes
+2019-03-15,New Zealand,Christchurch mosque attacks,Terror Attack / Mass Shooting,No,-9.806,10.0426,8.9558,Yes
+2019-12-09,New Zealand,Whakaari / White Island volcano eruption,Natural Disaster – Volcanic Eruption,No,-4.6339,3.5827,5.3864,No
+2017-06-14,United Kingdom,Grenfell Tower fire,Urban Disaster – Residential Fire,No,-1.6943,1.3596,2.1969,Yes
+2020-02-15,United Kingdom,Storm Dennis flooding,Natural Disaster – Flooding,No,-1.1115,1.7245,1.199,No
+2017-07-01,Canada,Canada 150 Celebrations,National Celebration,Yes,2.6648,2.6953,2.6326,Yes
+2017-09-23,New Zealand,All Blacks Win Rugby Championship,Sports Victory,Yes,2.9979,3.4207,5.317,No
+2017-12-09,Australia,Australia Legalizes Same-Sex Marriage,Social Milestone,Yes,1.2403,1.5051,1.9572,Yes
+2018-03-17,Ireland,St. Patrick's Day Celebrations,National Celebration,Yes,3.8376,4.5686,4.3668,Yes
+2018-04-23,United Kingdom,Birth of Prince Louis,Royal Event,Yes,2.0675,2.7651,2.4247,No
+2018-05-19,United Kingdom,Royal Wedding of Prince Harry and Meghan Markle,Royal Celebration,Yes,4.4923,6.8564,5.5029,Yes
+2019-07-14,Australia,Ash Barty Wins Wimbledon,Sports Victory,Yes,1.0944,1.5012,1.4398,No
+2020-10-17,New Zealand,Jacinda Ardern Wins Historic Re-election,Political Milestone,Yes,3.137,8.1209,5.502,No
+2020-12-15,USA,COVID-19 Vaccination Rollout Begins,Public Health Milestone,Yes,0.1433,0.5322,0.3531,Yes
+2020-02-03,USA,Kansas City Chiefs Win Super Bowl LIV,Sports Victory,Yes,0.3511,1.0599,0.3726,No

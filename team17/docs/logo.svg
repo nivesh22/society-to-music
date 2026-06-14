@@ -1,0 +1,43 @@
+<svg viewBox="0 0 500 90" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+
+  <style>
+    .wordmark { fill: #0F172A; }
+    .tagline  { fill: #475569; }
+    .meta     { fill: #94A3B8; }
+    @media (prefers-color-scheme: dark) {
+      .wordmark { fill: #F1F5F9; }
+      .tagline  { fill: #94A3B8; }
+      .meta     { fill: #64748B; }
+    }
+  </style>
+
+  <!-- Globe orb — dark fill anchors it on any background -->
+  <circle cx="44" cy="45" r="42" fill="#0F172A"/>
+  <circle cx="44" cy="45" r="42" fill="none" stroke="#334155" stroke-width="1.5"/>
+
+  <!-- Globe latitude lines — medium blue visible against dark fill -->
+  <ellipse cx="44" cy="45" rx="42" ry="18" fill="none" stroke="#3B82F6" stroke-width="1.2"/>
+  <line x1="2" y1="45" x2="86" y2="45" stroke="#3B82F6" stroke-width="1.2"/>
+
+  <!-- Globe longitude lines -->
+  <ellipse cx="44" cy="45" rx="22" ry="42" fill="none" stroke="#3B82F6" stroke-width="1.2"/>
+
+  <!-- Musical note head -->
+  <ellipse cx="41" cy="62" rx="9" ry="6.5" fill="#FBBF24" transform="rotate(-22 41 62)"/>
+
+  <!-- Stem -->
+  <line x1="49" y1="58" x2="49" y2="26" stroke="#FBBF24" stroke-width="3.2" stroke-linecap="round"/>
+
+  <!-- Flag -->
+  <path d="M49,26 Q65,33 57,46" fill="none" stroke="#FBBF24" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Wordmark -->
+  <text class="wordmark" x="102" y="35" font-size="26" font-weight="800" letter-spacing="0.5">Society to Music</text>
+
+  <!-- Tagline -->
+  <text class="tagline" x="103" y="56" font-size="13.5" letter-spacing="0.3">From Global Headlines to Streaming Habits</text>
+
+  <!-- Meta -->
+  <text class="meta" x="103" y="76" font-size="10.5" letter-spacing="1">MSBA 405  ·  UCLA Anderson  ·  2026</text>
+
+</svg>

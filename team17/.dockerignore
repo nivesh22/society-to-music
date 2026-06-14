@@ -1,0 +1,30 @@
+# Secrets — never embed in image
+.env
+.gcp/
+.kaggle/
+
+# Local runtime artifacts
+.venv/
+data/
+.viz/
+info.log
+*.log
+
+# Git
+.git/
+.gitignore
+
+# Python bytecode
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+**/*.pyd
+
+# Dev / docs
+notebooks/
+docs/
+tests/
+
+# OS
+.DS_Store
+Thumbs.db

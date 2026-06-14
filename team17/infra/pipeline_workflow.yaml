@@ -1,0 +1,296 @@
+# Cloud Workflows definition for the Society-to-Music pipeline.
+#
+# Deploy (one-time):
+#   gcloud workflows deploy run-pipeline \
+#     --location=us-central1 \
+#     --source=infra/pipeline_workflow.yaml
+#
+# Manual trigger:
+#   gcloud workflows run run-pipeline \
+#     --location=us-central1 \
+#     --data='{"image_tag":"latest","branch":"main"}'
+#
+# The workflow:
+#   1. Creates a minimal-cost Dataproc cluster
+#   2. Submits the Kedro pipeline as a PySpark job
+#   3. Polls until the job completes
+#   4. Deletes the cluster (always — even on failure)
+#   5. Surfaces any job error after cleanup
+
+main:
+  params: [args]
+  steps:
+
+    # ── 1. Initialise ──────────────────────────────────────────────────────────
+    - init:
+        assign:
+          - project_id: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+          - region: "us-central1"
+          - bucket: "msba405-society-music-2026"
+          - cluster_name: ${"stm-" + text.substring(uuid.generate(), 0, 8)}
+          - image_tag: ${default(map.get(args, "image_tag"), "latest")}
+          - branch: ${default(map.get(args, "branch"), "main")}
+          - branch_label: ${text.replace_all(text.replace_all(branch, "/", "-"), ".", "-")}
+          - dataproc_base: ${"https://dataproc.googleapis.com/v1/projects/" + project_id + "/regions/" + region}
+          - job_id: ""
+          - job_error: null
+
+    - log_start:
+        call: sys.log
+        args:
+          data:
+            event: pipeline_started
+            cluster: ${cluster_name}
+            image_tag: ${image_tag}
+            branch: ${branch}
+          severity: INFO
+
+    # ── 2. Create Dataproc cluster ─────────────────────────────────────────────
+    # Cost profile (us-central1, ~30-60 min run):
+    #   Master  : n2-standard-4  (4 vCPU, 16 GB) — ~$0.19/hr
+    #   Workers : 2x e2-standard-4 standard        — ~$0.13/hr each
+    #   Total   : ~$0.45/hr → ~$0.23–$0.45 per pipeline run
+    - create_cluster:
+        try:
+          call: http.post
+          args:
+            url: ${dataproc_base + "/clusters"}
+            auth:
+              type: OAuth2
+            body:
+              clusterName: ${cluster_name}
+              config:
+                masterConfig:
+                  numInstances: 1
+                  machineTypeUri: "n2-standard-4"
+                  diskConfig:
+                    bootDiskType: "pd-standard"
+                    bootDiskSizeGb: 100
+                workerConfig:
+                  numInstances: 2
+                  machineTypeUri: "e2-standard-4"
+                  diskConfig:
+                    bootDiskType: "pd-standard"
+                    bootDiskSizeGb: 100
+                softwareConfig:
+                  imageVersion: "2.2-debian12"
+                gceClusterConfig:
+                  zoneUri: ""
+                  internalIpOnly: false
+                  serviceAccount: ${"kedro-pipeline@" + project_id + ".iam.gserviceaccount.com"}
+                  serviceAccountScopes:
+                    - "https://www.googleapis.com/auth/cloud-platform"
+                  metadata:
+                    GCP_PROJECT_ID: ${project_id}
+                    GCS_BUCKET: ${bucket}
+                initializationActions:
+                  - executableFile: ${"gs://" + bucket + "/scripts/dataproc_init.sh"}
+                    executionTimeout: "600s"
+                lifecycleConfig:
+                  # Safety net: auto-delete cluster after 1 h idle (in case workflow fails)
+                  idleDeleteTtl: "3600s"
+          result: create_resp
+        except:
+          as: e
+          steps:
+            - log_create_failed:
+                call: sys.log
+                args:
+                  data:
+                    event: cluster_create_failed
+                    cluster: ${cluster_name}
+                    error: ${e}
+                  severity: CRITICAL
+            - raise_create_failed:
+                raise: ${e}
+
+    # ── 3. Poll until cluster is RUNNING ───────────────────────────────────────
+    - poll_cluster:
+        call: http.get
+        args:
+          url: ${dataproc_base + "/clusters/" + cluster_name}
+          auth:
+            type: OAuth2
+        result: cluster_resp
+
+    - check_cluster_state:
+        switch:
+          - condition: ${cluster_resp.body.status.state == "RUNNING"}
+            next: log_cluster_ready
+          - condition: ${cluster_resp.body.status.state == "ERROR"}
+            next: cluster_create_error
+        # default: fall through to sleep_cluster
+
+    - sleep_cluster:
+        call: sys.sleep
+        args:
+          seconds: 20
+        next: poll_cluster
+
+    - cluster_create_error:
+        steps:
+          - log_cluster_err:
+              call: sys.log
+              args:
+                data:
+                  event: cluster_error
+                  cluster: ${cluster_name}
+                  detail: ${cluster_resp.body.status.detail}
+                severity: CRITICAL
+          - raise_cluster_err:
+              raise: ${"Cluster ERROR - " + cluster_resp.body.status.detail}
+
+    - log_cluster_ready:
+        call: sys.log
+        args:
+          data:
+            event: cluster_ready
+            cluster: ${cluster_name}
+          severity: INFO
+        # falls through to submit_job
+
+    # ── 4. Submit Kedro pipeline as a PySpark job ──────────────────────────────
+    - submit_job:
+        try:
+          call: http.post
+          args:
+            url: ${dataproc_base + "/jobs" + ":submit"}
+            auth:
+              type: OAuth2
+            body:
+              job:
+                placement:
+                  clusterName: ${cluster_name}
+                pysparkJob:
+                  mainPythonFileUri: ${"gs://" + bucket + "/scripts/dataproc_run.py"}
+                  properties:
+                    # These become env vars inside the YARN app master (= Spark driver)
+                    "spark.yarn.appMasterEnv.KEDRO_ENV": "base"
+                    "spark.yarn.appMasterEnv.GCP_PROJECT_ID": ${project_id}
+                    "spark.yarn.appMasterEnv.GCS_BUCKET": ${bucket}
+                    "spark.yarn.appMasterEnv.SPARK_MASTER": "yarn"
+                    "spark.submit.deployMode": "client"
+                labels:
+                  branch: ${branch_label}
+                  image_tag: ${text.replace_all(image_tag, ".", "-")}
+          result: job_resp
+        except:
+          as: e
+          steps:
+            - capture_submit_error:
+                assign:
+                  - job_error: ${"Job submit failed— " + json.encode_to_string(e)}
+            - log_submit_error:
+                call: sys.log
+                args:
+                  data:
+                    event: job_submit_failed
+                    cluster: ${cluster_name}
+                    error: ${job_error}
+                  severity: ERROR
+            - skip_to_cleanup:
+                next: delete_cluster
+
+    - capture_job_id:
+        assign:
+          - job_id: ${job_resp.body.reference.jobId}
+
+    - log_job_submitted:
+        call: sys.log
+        args:
+          data:
+            event: job_submitted
+            job_id: ${job_id}
+            cluster: ${cluster_name}
+          severity: INFO
+
+    # ── 5. Poll until job completes ────────────────────────────────────────────
+    - poll_job:
+        call: http.get
+        args:
+          url: ${dataproc_base + "/jobs/" + job_id}
+          auth:
+            type: OAuth2
+        result: job_status_resp
+
+    - check_job_state:
+        switch:
+          - condition: ${job_status_resp.body.status.state == "DONE"}
+            next: delete_cluster
+          - condition: ${job_status_resp.body.status.state == "ERROR"}
+            next: capture_job_error
+          - condition: ${job_status_resp.body.status.state == "CANCELLED"}
+            next: capture_job_error
+        # default: fall through to sleep_job
+
+    - sleep_job:
+        call: sys.sleep
+        args:
+          seconds: 30
+        next: poll_job
+
+    - capture_job_error:
+        assign:
+          - job_error: ${"Job " + job_id + " failed — state— " + job_status_resp.body.status.state}
+        next: delete_cluster
+
+    # ── 6. Delete cluster (always runs) ───────────────────────────────────────
+    - delete_cluster:
+        try:
+          call: http.delete
+          args:
+            url: ${dataproc_base + "/clusters/" + cluster_name}
+            auth:
+              type: OAuth2
+          result: delete_resp
+        except:
+          as: e
+          steps:
+            - log_delete_error:
+                call: sys.log
+                args:
+                  data:
+                    event: cluster_delete_failed
+                    cluster: ${cluster_name}
+                    error: ${e}
+                  severity: ERROR
+                # Don't re-raise — lifecycle idleDeleteTtl will clean up within 1 h
+
+    - log_cluster_deleted:
+        call: sys.log
+        args:
+          data:
+            event: cluster_deleted
+            cluster: ${cluster_name}
+          severity: INFO
+
+    # ── 7. Surface any job error after cleanup ────────────────────────────────
+    - check_job_error:
+        switch:
+          - condition: ${job_error != null}
+            next: pipeline_failed
+
+    - pipeline_succeeded:
+        steps:
+          - log_success:
+              call: sys.log
+              args:
+                data:
+                  event: pipeline_succeeded
+                  job_id: ${job_id}
+                severity: INFO
+          - return_ok:
+              return: ${"Pipeline succeeded — job— " + job_id}
+
+    - pipeline_failed:
+        steps:
+          - log_failure:
+              call: sys.log
+              args:
+                data:
+                  event: pipeline_failed
+                  job_id: ${job_id}
+                  error: ${job_error}
+                severity: CRITICAL
+          - raise_failure:
+              raise: ${job_error}

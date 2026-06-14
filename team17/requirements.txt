@@ -1,0 +1,29 @@
+# Runtime dependencies — installed in the Docker image and on Dataproc master.
+# Pin exact versions to keep Docker builds fast and reproducible.
+
+# Kedro
+kedro==1.0.0
+kedro-datasets[spark,pandas.SQLTableDataset]==8.1.0
+
+# Spark + pandas
+pyspark==3.5.3
+pandas==2.2.3
+pyarrow==17.0.0
+
+# Data / storage
+duckdb==1.1.3
+duckdb-engine==0.14.0
+snowflake-sqlalchemy==1.6.1
+snowflake-connector-python[pandas]==3.12.3
+
+# Cloud
+google-cloud-secret-manager==2.21.1
+
+# Data ingestion
+kaggle==1.6.17
+
+# Logging
+python-json-logger==2.0.7
+
+# Analytics
+statsmodels==0.14.4

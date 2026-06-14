@@ -1,0 +1,33 @@
+start_date: "2017-01-01"
+end_date: "2020-12-31"
+target_regions:
+  - "Australia"
+  - "Canada"
+  - "Ireland"
+  - "New Zealand"
+  - "United Kingdom"
+  - "United States"
+chart_type: "top200"
+trend_weights:
+  MOVE_UP: 1.5
+  SAME_POSITION: 1.0
+  MOVE_DOWN: 0.7
+coverage_ok: 0.30
+coverage_low: 0.15
+
+feature_columns:
+  audio: ["valence", "energy", "danceability", "acoustics", "liveliness"]
+  tempo: "tempo"
+  nrc:
+    - "anger_norm2"
+    - "anticipation_norm2"
+    - "disgust_norm2"
+    - "fear_norm2"
+    - "joy_norm2"
+    - "sadness_norm2"
+    - "surprise_norm2"
+    - "trust_norm2"
+  lda: ["Celebrate", "Desire", "Explore", "Fun", "Hope", "Love", "Nostalgia", "Thug"]
+lag_windows: [0, 1, 3, 7, 14]
+snowflake_schema: "CURATED"
+

@@ -1,0 +1,50 @@
+raw_gdelt:
+  type: kedro_datasets.spark.SparkDataset
+  filepath: data/01_raw/gdelt.csv
+  file_format: csv
+  load_args:
+    header: true
+    inferSchema: true
+
+raw_spotify_charts:
+  type: kedro_datasets.spark.SparkDataset
+  filepath: data/01_raw/charts_full.parquet
+  file_format: parquet
+
+raw_audio_features:
+  type: kedro_datasets.spark.SparkDataset
+  filepath: data/01_raw/audio_features.csv
+  file_format: csv
+  load_args:
+    header: true
+    inferSchema: true
+
+daily_news_sentiment:
+  type: pandas.SQLTableDataset
+  table_name: NEWS_SENTIMENT
+  credentials: duckdb_credentials
+
+# ── Curate output ─────────────────────────────────────────────────────────────
+
+curated_music_features:
+  type: pandas.SQLTableDataset
+  table_name: MUSIC_FEATURES
+  credentials: duckdb_credentials
+  save_args:
+    if_exists: replace
+
+# ── Analytics pipeline outputs ─────────────────────────────────────────────────
+
+music_news_joined:
+  type: pandas.SQLTableDataset
+  table_name: MUSIC_NEWS_JOINED
+  credentials: duckdb_credentials
+  save_args:
+    if_exists: replace
+
+feature_correlations_olap:
+  type: pandas.SQLTableDataset
+  table_name: FEATURE_CORRELATIONS_OLAP
+  credentials: duckdb_credentials
+  save_args:
+    if_exists: replace
